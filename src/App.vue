@@ -1,161 +1,69 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import { getCliArgs, type CliArgs } from "./utils/cli";
 
 const greetMsg = ref("");
 const name = ref("");
+const cliArgs = ref<CliArgs>({ args: [] });
+const isLoadingArgs = ref(true);
 
 async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
   greetMsg.value = await invoke("greet", { name: name.value });
 }
+
+// 在组件挂载时获取命令行参数
+onMounted(async () => {
+  isLoadingArgs.value = true;
+  try {
+    cliArgs.value = await getCliArgs();
+  } catch (error) {
+    console.error("获取命令行参数失败:", error);
+  } finally {
+    isLoadingArgs.value = false;
+  }
+});
+
 </script>
 
 <template>
+  <!-- USE TailwindCSS classes for styling -->
   <main class="container">
-    <h1>Welcome to Tauri + Vue</h1>
-
-    <div class="row">
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
     <h1 class="text-3xl font-bold">Hello world!</h1>
 
     <form class="row" @submit.prevent="greet">
-      <input id="greet-input" v-model="name" placeholder="Enter a name..." />
-      <button type="submit">Greet</button>
+      <input v-model="name" placeholder="Enter a name..." class="border-1 border-gray-300 rounded-md p-2 m-2" />
+      <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded-full">Greet</button>
     </form>
     <p>{{ greetMsg }}</p>
+
+    <!-- 命令行参数显示部分 -->
+    <div class="mt-8">
+      <h2 class="text-2xl font-bold mb-2">命令行参数</h2>
+      <div v-if="isLoadingArgs" class="loading">加载中...</div>
+      <div v-else-if="cliArgs.args.length === 0" class="no-args">
+        没有命令行参数
+      </div>
+      <div v-else class="args-list">
+        <div class="text-left">
+          <div class="font-medium">参数列表:</div>
+          <ul class="list-disc pl-6">
+            <li v-for="(arg, index) in cliArgs.args" :key="index" class="text-sm">
+              {{ arg }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
-<style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-</style>
 <style>
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
 .container {
   margin: 0;
-  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-
-  button:active {
-    background-color: #0f0f0f69;
-  }
 }
 </style>
