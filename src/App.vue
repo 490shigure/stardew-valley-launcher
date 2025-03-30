@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
-import { getCliArgs, type CliArgs } from "./utils/cli";
+import { getCliArgs, type CliArgs } from "@/utils/cli";
 
 const greetMsg = ref("");
 const name = ref("");
@@ -24,12 +24,22 @@ onMounted(async () => {
   }
 });
 
+const mapLocale = {
+  en: "English",
+  zh: "中文",
+}
+
 </script>
 
 <template>
   <!-- USE TailwindCSS classes for styling -->
   <main class="container">
-    <h1 class="text-3xl font-bold">Hello world!</h1>
+    <h1 class="text-3xl font-bold">{{ $t('title') }}</h1>
+
+    <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2 m-2">
+      <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+        {{ mapLocale[locale as keyof typeof mapLocale] }}</option>
+    </select>
 
     <form class="row" @submit.prevent="greet">
       <input v-model="name" placeholder="Enter a name..." class="border-1 border-gray-300 rounded-md p-2 m-2" />
