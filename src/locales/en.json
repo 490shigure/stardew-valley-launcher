@@ -1,4 +1,16 @@
 {
     "title": "Stardew Valley Launcher",
-    "greeting": "Hello, welcome to Stardew Valley Launcher!"
+    "greeting": "Hello, welcome to Stardew Valley Launcher!",
+    "menu": {
+        "file": "File",
+        "file_open": "Open",
+        "file_save": "Save",
+        "file_exit": "Exit",
+        "tools": "Tools",
+        "tools_settings": "Settings",
+        "tools_mods": "Mods Manager",
+        "about": "About",
+        "about_help": "Help",
+        "about_version": "Version"
+    }
 }
