@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { getCliArgs, type CliArgs } from "@/utils/cli";
+import { localeMap } from "@/i18n";
 
 const greetMsg = ref("");
 const name = ref("");
@@ -23,12 +24,6 @@ onMounted(async () => {
     isLoadingArgs.value = false;
   }
 });
-
-const mapLocale = {
-  en: "English",
-  zh: "中文",
-}
-
 </script>
 
 <template>
@@ -38,7 +33,7 @@ const mapLocale = {
 
     <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2 m-2">
       <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-        {{ mapLocale[locale as keyof typeof mapLocale] }}</option>
+        {{ localeMap[locale as keyof typeof localeMap] }}</option>
     </select>
 
     <form class="row" @submit.prevent="greet">
