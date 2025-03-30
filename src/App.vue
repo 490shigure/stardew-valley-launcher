@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { getCliArgs, type CliArgs } from "@/utils/cli";
 import { localeMap } from "@/i18n";
+import GlobalMenu from "@/components/GlobalMenu.vue";
 
 const greetMsg = ref("");
 const name = ref("");
@@ -27,48 +28,53 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- USE TailwindCSS classes for styling -->
-  <main class="container">
-    <h1 class="text-3xl font-bold">{{ $t('title') }}</h1>
+  <div class="global-container ">
+    <!-- 全局菜单 -->
+    <GlobalMenu />
 
-    <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2 m-2">
-      <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-        {{ localeMap[locale as keyof typeof localeMap] }}</option>
-    </select>
+    <!-- 主内容 -->
+    <main>
+      <h1 class="text-3xl font-bold">{{ $t('title') }}</h1>
 
-    <form class="row" @submit.prevent="greet">
-      <input v-model="name" placeholder="Enter a name..." class="border-1 border-gray-300 rounded-md p-2 m-2" />
-      <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded-full">Greet</button>
-    </form>
-    <p>{{ greetMsg }}</p>
+      <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2 m-2">
+        <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+          {{ localeMap[locale as keyof typeof localeMap] }}</option>
+      </select>
 
-    <!-- 命令行参数显示部分 -->
-    <div class="mt-8">
-      <h2 class="text-2xl font-bold mb-2">命令行参数</h2>
-      <div v-if="isLoadingArgs" class="loading">加载中...</div>
-      <div v-else-if="cliArgs.args.length === 0" class="no-args">
-        没有命令行参数
-      </div>
-      <div v-else class="args-list">
-        <div class="text-left">
-          <div class="font-medium">参数列表:</div>
-          <ul class="list-disc pl-6">
-            <li v-for="(arg, index) in cliArgs.args" :key="index" class="text-sm">
-              {{ arg }}
-            </li>
-          </ul>
+      <form class="row" @submit.prevent="greet">
+        <input v-model="name" placeholder="Enter a name..." class="border-1 border-gray-300 rounded-md p-2 m-2" />
+        <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded-full">Greet</button>
+      </form>
+      <p>{{ greetMsg }}</p>
+
+      <!-- 命令行参数显示部分 -->
+      <div class="mt-8">
+        <h2 class="text-2xl font-bold mb-2">命令行参数</h2>
+        <div v-if="isLoadingArgs" class="loading">加载中...</div>
+        <div v-else-if="cliArgs.args.length === 0" class="no-args">
+          没有命令行参数
+        </div>
+        <div v-else class="args-list">
+          <div class="text-left">
+            <div class="font-medium">参数列表:</div>
+            <ul class="list-disc pl-6">
+              <li v-for="(arg, index) in cliArgs.args" :key="index" class="text-sm">
+                {{ arg }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </template>
 
-<style>
-.container {
+<style scoped>
+.global-container {
   margin: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
 }
 </style>

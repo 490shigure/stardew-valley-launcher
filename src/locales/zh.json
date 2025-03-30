@@ -1,4 +1,16 @@
 {
     "title": "星露谷物语启动器",
-    "greeting": "你好，欢迎使用星露谷物语启动器！"
+    "greeting": "你好，欢迎使用星露谷物语启动器！",
+    "menu": {
+        "file": "文件",
+        "file_open": "打开",
+        "file_save": "保存",
+        "file_exit": "退出",
+        "tools": "工具",
+        "tools_settings": "设置",
+        "tools_mods": "模组管理",
+        "about": "关于",
+        "about_help": "帮助",
+        "about_version": "版本信息"
+    }
 }
