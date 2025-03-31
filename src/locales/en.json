@@ -30,6 +30,17 @@
                 "version": "Version",
                 "enabled": "Enabled",
                 "updatable": "Updatable"
+            },
+            "search_placeholder": "Search",
+            "mod_status": {
+                "all": "All",
+                "enabled": "Enabled",
+                "disabled": "Disabled",
+                "updatable": "Updatable"
+            },
+            "mod_table_tools_btn": {
+                "check_update": "Check Update",
+                "refresh": "Refresh"
             }
         }
     }

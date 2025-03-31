@@ -41,12 +41,122 @@ const installedMods = ref<ModInfo[]>([
         enabled: false,
         updatable: true,
     },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
+    {
+        name: "AutomaticGates",
+        author: "Rakiin aKa ScheKaa",
+        version: "2.5.4",
+        description: "Opens and closes gates automatically",
+        uniqueId: "Rakiin.AutomaticGates",
+        MinimumApiVersion: "4.0",
+        UpdateKeys: ["Nexus:3109"],
+        last_update: "2025-03-31",
+        enabled: false,
+        updatable: true,
+    },
 ]);
+
+// 搜索文本
+const filterText = ref("");
+
+// 模组状态
+enum ModStatus {
+    All = "all",
+    Enabled = "enabled",
+    Disabled = "disabled",
+    Updatable = "updatable",
+}
+const modStatusFilter = ref(ModStatus.All);
 
 // 计算显示的模组
 const displayMods = computed(() => {
     // 筛选
-    const filteredMods = installedMods.value.filter((_mod) => true);
+    const filteredMods = installedMods.value.filter((mod) => {
+        let flag = true;
+        // 根据模组状态过滤
+        switch (modStatusFilter.value) {
+            case ModStatus.All:
+                break;
+            case ModStatus.Enabled:
+                flag = mod.enabled;
+                break;
+            case ModStatus.Disabled:
+                flag = !mod.enabled;
+                break;
+            case ModStatus.Updatable:
+                flag = mod.updatable;
+                break;
+            default:
+                break;
+        }
+        // 根据搜索文本过滤
+        if (filterText.value) {
+            flag = flag && (mod.name.toLowerCase().includes(filterText.value.toLowerCase()) ||
+                mod.author.toLowerCase().includes(filterText.value.toLowerCase()) ||
+                mod.version.toLowerCase().includes(filterText.value.toLowerCase())
+            );
+        }
+        return flag;
+    });
     // 根据enabledMods修改enabled
     filteredMods.forEach((mod) => {
         mod.enabled = enabledMods.value.includes(mod.uniqueId);
@@ -71,7 +181,7 @@ const handleModCheckboxClick = (uniqueId: string, lastEnabled: boolean) => {
 </script>
 
 <template>
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col h-full flex-1">
         <!-- 模组列表 -->
         <div class="overflow-x-auto">
             <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
@@ -128,9 +238,33 @@ const handleModCheckboxClick = (uniqueId: string, lastEnabled: boolean) => {
                 </div>
             </div>
         </div>
+        <!-- 模组列表底部工具栏 -->
+        <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
+            <!-- 筛选模组状态 -->
+            <select id="mod_status" v-model="modStatusFilter" class="w-fit border-1 border-gray-300 rounded-md p-2">
+                <option v-for="status in Object.values(ModStatus)" :key="status" :value="status">
+                    {{ $t(`index.body.mod_status.${status}`) }}
+                </option>
+            </select>
+            <!-- 搜索框 -->
+            <input type="text" v-model="filterText" :placeholder="$t('index.body.search_placeholder')"
+                class="w-fit border-1 border-gray-400 rounded-md p-2">
+            <!-- 语言选择 -->
+            <!-- <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2">
+                <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
+                    {{ localeMap[locale as keyof typeof localeMap] }}</option>
+            </select> -->
+            <!-- 右侧区域 -->
+            <div class="flex items-center ml-auto gap-3">
+                <!-- 检查更新 -->
+                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
+                    {{ $t('index.body.mod_table_tools_btn.check_update') }}
+                </button>
+                <!-- 列表刷新 -->
+                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
+                    {{ $t('index.body.mod_table_tools_btn.refresh') }}
+                </button>
+            </div>
+        </div>
     </div>
-    <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2 m-2">
-        <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-            {{ localeMap[locale as keyof typeof localeMap] }}</option>
-    </select>
 </template>
