@@ -22,6 +22,15 @@
             "enabled_mods": "Enabled",
             "updatable_mods": "Updatable",
             "start_btn_text": "Start"
+        },
+        "body": {
+            "mod_table_header": {
+                "name": "Mod Name",
+                "last_update": "Last Update",
+                "version": "Version",
+                "enabled": "Enabled",
+                "updatable": "Updatable"
+            }
         }
     }
 }
