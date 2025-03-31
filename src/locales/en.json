@@ -12,5 +12,16 @@
         "about": "About",
         "about_help": "Help",
         "about_version": "Version"
+    },
+    "index": {
+        "header": {
+            "workspace": "Workspace",
+            "manage_btn_text": "Manage Workspaces",
+            "save_btn_text": "Save",
+            "total_mods": "Total Mods",
+            "enabled_mods": "Enabled",
+            "updatable_mods": "Updatable",
+            "start_btn_text": "Start"
+        }
     }
 }

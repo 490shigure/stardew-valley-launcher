@@ -12,5 +12,16 @@
         "about": "关于",
         "about_help": "帮助",
         "about_version": "版本信息"
+    },
+    "index": {
+        "header": {
+            "workspace": "工作区",
+            "manage_btn_text": "管理工作区",
+            "save_btn_text": "保存",
+            "total_mods": "总模组",
+            "enabled_mods": "已启用",
+            "updatable_mods": "可更新",
+            "start_btn_text": "启动"
+        }
     }
 }
