@@ -67,6 +67,8 @@
     "version": {
         "title": "Version Information",
         "current": "Current Version:",
-        "close": "Close"
+        "close": "Close",
+        "cli_args": "CLI Args",
+        "check_update": "Check Update"
     }
 }
