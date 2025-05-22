@@ -23,6 +23,12 @@ fn get_cli_args(state: tauri::State<'_, CliArgsState>) -> Result<CliArgs, String
     Ok(args.clone())
 }
 
+#[tauri::command]
+fn exit_app(app: tauri::AppHandle) {
+    // 优雅退出应用
+    app.exit(0);
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // 获取环境参数
@@ -35,7 +41,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         // 将命令行参数保存到应用状态中
         .manage(CliArgsState(Mutex::new(cli_args)))
-        .invoke_handler(tauri::generate_handler![greet, get_cli_args])
+        .invoke_handler(tauri::generate_handler![greet, get_cli_args, exit_app])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { modalUtil } from '@/utils/modal';
+import { exitApp } from '@/utils/app';
 
 // modal store
 const { open } = modalUtil();
@@ -78,6 +79,9 @@ const handleMenuItemClick = (action?: string) => {
       break;
     case 'version':
       open('version');
+      break;
+    case 'exit':
+      exitApp();
       break;
     default:
       console.log(`菜单项 ${action} 被点击`);
