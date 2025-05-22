@@ -181,7 +181,7 @@ const handleModCheckboxClick = (uniqueId: string, lastEnabled: boolean) => {
 </script>
 
 <template>
-    <div class="flex flex-col h-full flex-1">
+    <div class="flex-1 overflow-y-auto flex flex-col">
         <!-- 模组列表 -->
         <div class="overflow-x-auto">
             <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
