@@ -21,7 +21,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex flex-col h-full">
+    <div class="flex-1 flex flex-col overflow-y-auto">
         <IndexHeader />
         <IndexBody />
     </div>
