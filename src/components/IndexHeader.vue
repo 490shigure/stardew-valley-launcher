@@ -1,12 +1,26 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed } from 'vue';
+import { useModsStore } from '@/stores/useModsStore';
 
 const workspaces = reactive<string[]>(["W1", "W2", "W3"]);
 const selectedWorkspace = ref<string>('');
 
-const totalMods = ref<number>(111);
-const enabledMods = ref<number>(111);
-const updatableMods = ref<number>(111);
+// 使用 Pinia 管理模组数据
+const modsStore = useModsStore();
+
+// 统计信息（此处仍使用示例数据，可根据业务逻辑调整）
+const totalMods = computed(() => modsStore.mods.length);
+const enabledMods = computed(() => modsStore.enabledIds.length);
+// 这里暂以 0 代替，可根据实际 updatable 字段计算
+const updatableMods = computed(() => modsStore.mods.filter(m => m.updatable).length ?? 0);
+
+// 未保存变更状态
+const unsavedChanges = computed(() => modsStore.hasUnsavedChanges);
+
+const saveChanges = () => {
+  modsStore.markSaved();
+  // TODO: 实际保存到磁盘 / API
+};
 
 </script>
 
@@ -49,8 +63,15 @@ const updatableMods = ref<number>(111);
             </span>
         </button>
         <!-- 保存 -->
-        <button class="h-10 w-10 flex items-center justify-center border-1
-             border-gray-500 rounded-md hover:bg-gray-200 active:bg-gray-400 group relative">
+        <button
+            :class="[
+                'h-10 w-10 flex items-center justify-center border-1 rounded-md group relative transition-colors',
+                unsavedChanges ?
+                    'border-red-500 bg-orange-200 hover:bg-orange-300 active:bg-orange-200' :
+                    'border-gray-500 hover:bg-gray-200 active:bg-gray-400'
+            ]"
+            @click="saveChanges"
+        >
             <svg class="size-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
