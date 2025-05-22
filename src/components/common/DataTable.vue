@@ -24,6 +24,7 @@ const emit = defineEmits<{
   (e: 'sort', key: string): void;
   (e: 'toggle', key: string | number): void;
   (e: 'toggle-all', checked: boolean): void;
+  (e: 'row-contextmenu', event: MouseEvent, row: Record<string, any>): void;
 }>();
 
 const rowKey = computed(() => props.rowKey ?? 'id');
@@ -53,6 +54,12 @@ const isSelected = (row: Record<string, any>) => {
 const formatCell = (val: unknown) => {
   if (typeof val === 'boolean') return val ? '✓' : '';
   return val as any;
+};
+
+// 处理行级右键菜单
+const handleContextMenu = (event: MouseEvent, row: Record<string, any>) => {
+  event.preventDefault();
+  emit('row-contextmenu', event, row);
 };
 </script>
 
@@ -86,7 +93,8 @@ const formatCell = (val: unknown) => {
 
           <!-- 内容 -->
           <tbody class="divide-y divide-gray-200 bg-white">
-            <tr v-for="row in props.items" :key="row[rowKey]" class="hover:bg-gray-100">
+            <tr v-for="row in props.items" :key="row[rowKey]" class="hover:bg-gray-100"
+                @contextmenu.prevent="handleContextMenu($event, row)">
               <td v-if="props.selectable" class="pl-5 pr-0 py-4">
                 <input type="checkbox" :checked="isSelected(row)" @change="emit('toggle', row[rowKey])"
                   class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out" />

@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import DataTable from '@/components/common/DataTable.vue';
 import type { Column } from '@/components/common/DataTable.vue';
 import { useI18n } from 'vue-i18n';
+import ContextMenu, { ContextMenuOption } from '@/components/common/ContextMenu.vue';
 
 // 存档信息类型
 interface SaveInfo {
@@ -90,6 +91,44 @@ const saveColumns = computed<Column[]>(() => [
 onMounted(() => {
   // TODO: 读取磁盘存档列表并填充 saves
 });
+
+// ---------- 行级右键菜单 ----------
+const saveContext = ref<{ visible: boolean; x: number; y: number; target: SaveInfo | null }>({
+  visible: false,
+  x: 0,
+  y: 0,
+  target: null,
+});
+
+const saveContextOptions = computed<ContextMenuOption[]>(() => {
+  const save = saveContext.value.target;
+  if (!save) return [];
+  return [
+    {
+      label: '打开存档文件夹',
+      action: () => console.log('open save folder', save.name),
+    },
+    {
+      label: '备份存档',
+      action: () => console.log('backup save', save.name),
+    },
+    {
+      label: '删除存档',
+      action: () => console.log('delete save', save.name),
+    },
+  ];
+});
+
+const handleSaveContextMenu = (event: MouseEvent, row: any) => {
+  saveContext.value.visible = true;
+  saveContext.value.x = event.clientX;
+  saveContext.value.y = event.clientY;
+  saveContext.value.target = row as SaveInfo;
+};
+
+const closeSaveContext = () => {
+  saveContext.value.visible = false;
+};
 </script>
 
 <template>
@@ -97,7 +136,7 @@ onMounted(() => {
     <!-- 存档列表 -->
     <div class="flex-1 min-h-0">
       <DataTable :items="displaySaves" :columns="saveColumns" row-key="name" :sort-key="sortKey" :sort-order="sortOrder"
-        @sort="handleSort" />
+        @sort="handleSort" @row-contextmenu="handleSaveContextMenu" />
     </div>
 
     <!-- 底部工具栏 -->
@@ -115,5 +154,9 @@ onMounted(() => {
         </button>
       </div>
     </div>
+
+    <!-- 右键菜单 -->
+    <ContextMenu :visible="saveContext.visible" :x="saveContext.x" :y="saveContext.y" :options="saveContextOptions"
+      @close="closeSaveContext" />
   </div>
 </template>
