@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { supportedLocales, localeMap, setLocale, getLocale } from '@/i18n';
 import { modalUtil } from '@/utils/modal';
 import type { Settings } from '@/types/settings';
@@ -14,6 +14,12 @@ const settings = ref<Settings>({
   language: 'en',
 });
 
+// 初始化设置
+onMounted(() => {
+  console.log("初始化设置");
+  settings.value.language = getLocale() as any;
+});
+
 // 切换语言
 const handleLanguageChange = () => {
   if (supportedLocales.includes(settings.value.language as any)) {
@@ -21,7 +27,10 @@ const handleLanguageChange = () => {
   }
 };
 
+// 关闭弹窗
 const close = () => closeModal('settings');
+
+// 保存设置
 const save = () => closeModal('settings');
 </script>
 
