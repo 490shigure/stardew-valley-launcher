@@ -59,18 +59,18 @@ const formatCell = (val: unknown) => {
 <template>
   <div class="overflow-x-auto overflow-y-auto h-full px-3 pb-2 sm:px-3 lg:px-5 table-wrapper">
     <div class="inline-block min-w-full align-middle">
-      <div class="ring-1 shadow-sm ring-black/5 rounded-md sm:rounded-lg h-full overflow-hidden">
+      <div class="relative ring-1 shadow-sm ring-black/5 rounded-md sm:rounded-lg h-full">
         <table class="min-w-full divide-y divide-gray-300">
           <!-- 表头 -->
           <thead class="bg-gray-50 sticky top-0">
             <tr>
               <th v-if="props.selectable"
-                class="pl-5 pr-0 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0">
+                class="pl-5 pr-0 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 z-10 first:rounded-tl-md">
                 <input type="checkbox" :checked="allSelected" @change="handleToggleAll"
                   class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out" />
               </th>
               <th v-for="col in props.columns" :key="col.key"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 select-none" :class="[
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 z-10 select-none first:rounded-tl-md last:rounded-tr-md" :class="[
                   col.sortable !== false ? 'cursor-pointer' : '',
                   col.width ?? ''
                 ]" @click="col.sortable !== false && handleSort(col.key)">
