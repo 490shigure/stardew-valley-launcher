@@ -34,7 +34,7 @@ const emit = defineEmits(['toggleManageView']);
 </script>
 
 <template>
-    <div class="flex items-center gap-3 h-fit px-5 py-2">
+    <div class="flex items-center gap-3 h-fit px-5 py-3">
         <div class="flex items-center">
             <!-- 工作区选择 -->
             <a class="text-1xl">{{ $t('index.header.workspace') }}</a>

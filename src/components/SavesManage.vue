@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import DataTable from '@/components/common/DataTable.vue';
 import type { Column } from '@/components/common/DataTable.vue';
+import { useI18n } from 'vue-i18n';
 
 // 存档信息类型
 interface SaveInfo {
@@ -73,15 +74,17 @@ const displaySaves = computed(() => {
   return list;
 });
 
-// DataTable 列配置
-const saveColumns: Column[] = [
-  { key: 'name', header: '存档名' },
-  { key: 'farmer', header: '农场主' },
-  { key: 'farmName', header: '农场' },
-  { key: 'lastPlayed', header: '最后游玩' },
-  { key: 'seasonDay', header: '季节 / 天' },
-  { key: 'year', header: '年份' },
-];
+const { t } = useI18n();
+
+// DataTable 列配置（根据当前语言动态生成）
+const saveColumns = computed<Column[]>(() => [
+  { key: 'name', header: t('index.body.save_table_header.name') },
+  { key: 'farmer', header: t('index.body.save_table_header.farmer') },
+  { key: 'farmName', header: t('index.body.save_table_header.farmName') },
+  { key: 'lastPlayed', header: t('index.body.save_table_header.lastPlayed') },
+  { key: 'seasonDay', header: t('index.body.save_table_header.seasonDay') },
+  { key: 'year', header: t('index.body.save_table_header.year') },
+]);
 
 // 模拟 mounted 时可能的初始化逻辑
 onMounted(() => {
@@ -100,15 +103,15 @@ onMounted(() => {
     <!-- 底部工具栏 -->
     <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
       <!-- 搜索框 -->
-      <input v-model="filterText" type="text" placeholder="搜索存档..."
+      <input v-model="filterText" type="text" :placeholder="t('index.body.save_search_placeholder')"
         class="w-fit border-1 border-gray-400 rounded-md p-2" />
       <!-- 右侧工具 -->
       <div class="flex items-center ml-auto gap-3">
         <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-          刷新
+          {{ t('index.body.save_table_tools_btn.refresh') }}
         </button>
         <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-          打开文件夹
+          {{ t('index.body.save_table_tools_btn.open_folder') }}
         </button>
       </div>
     </div>

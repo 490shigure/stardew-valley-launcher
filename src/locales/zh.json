@@ -48,6 +48,19 @@
             "mod_table_tools_btn": {
                 "check_update": "检查更新",
                 "refresh": "刷新"
+            },
+            "save_table_header": {
+                "name": "存档名",
+                "farmer": "农场主",
+                "farmName": "农场",
+                "lastPlayed": "最后游玩",
+                "seasonDay": "季节 / 天",
+                "year": "年份"
+            },
+            "save_search_placeholder": "搜索存档",
+            "save_table_tools_btn": {
+                "refresh": "刷新",
+                "open_folder": "打开文件夹"
             }
         }
     },
