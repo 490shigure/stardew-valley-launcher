@@ -22,6 +22,10 @@ const saveChanges = () => {
   // TODO: 实际保存到磁盘 / API
 };
 
+// 接收当前激活的管理视图，并提供切换事件
+const props = defineProps<{ activeManage: 'mods' | 'saves' }>();
+const emit = defineEmits(['toggleManageView']);
+
 </script>
 
 <template>
@@ -60,6 +64,26 @@ const saveChanges = () => {
                     group-hover:opacity-100 absolute -bottom-8 whitespace-nowrap
                  bg-gray-700 text-white text-sm rounded p-1 pointer-events-none">
                 {{ $t('index.header.manage_btn_text') }}
+            </span>
+        </button>
+        <!-- 切换 模组 / 存档 管理按钮 -->
+        <button
+            class="h-10 w-10 flex items-center justify-center border-1 border-gray-500 rounded-md hover:bg-gray-200 active:bg-gray-400 group relative"
+            @click="emit('toggleManageView')"
+        >
+            <!-- 根据当前视图展示不同图标 -->
+            <svg v-if="props.activeManage === 'mods'" class="size-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3H21V21H3V3Z" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 9H21" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 21V9" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <!-- Folder-open 图标，表示切到存档管理 -->
+            <svg v-else class="size-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 4H10L12 6H21C21.5523 6 22 6.44772 22 7V18C22 18.5523 21.5523 19 21 19H3C2.44772 19 2 18.5523 2 18V5C2 4.44772 2.44772 4 3 4Z" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 9H22" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="opacity-0 transition-opacity duration-200 group-hover:opacity-100 absolute -bottom-8 whitespace-nowrap bg-gray-700 text-white text-sm rounded p-1 pointer-events-none">
+                {{ props.activeManage === 'mods' ? '存档管理' : '模组管理' }}
             </span>
         </button>
         <!-- 保存 -->
