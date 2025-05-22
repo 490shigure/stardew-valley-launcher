@@ -21,8 +21,13 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex-1 flex flex-col overflow-y-auto">
+    <div class="flex-1 flex flex-col overflow-y-auto bg-gray-100">
         <IndexHeader />
-        <IndexBody />
+        <!-- 主内容区域 -->
+        <IndexBody class="flex-1" />
+        <!-- 额外区域 Section3 -->
+        <div class="bg-purple-500 text-white p-4">
+            Section3
+        </div>
     </div>
 </template>
