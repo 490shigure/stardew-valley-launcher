@@ -3,19 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useModsStore } from '@/stores/useModsStore';
 import ModTable from './ModTable.vue';
 import ModToolbar from './ModToolbar.vue';
-
-type ModInfo = {
-    name: string;
-    author: string;
-    version: string;
-    description: string;
-    uniqueId: string;
-    MinimumApiVersion: string;
-    UpdateKeys: string[];
-    last_update: string;
-    enabled: boolean;
-    updatable: boolean;
-}
+import type { ModInfo } from '@/types/mod';
 
 const modsStore = useModsStore();
 
