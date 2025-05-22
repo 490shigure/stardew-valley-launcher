@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Index from "@/index.vue";
-import GlobalMenu from "@/components/GlobalMenu.vue";
-import GlobalFooter from "@/components/GlobalFooter.vue";
-import ModalContainer from "@/components/ModalContainer.vue";
+import GlobalMenu from "@/components/common/GlobalMenu.vue";
+import GlobalFooter from "@/components/common/GlobalFooter.vue";
+import ModalContainer from "@/components/modals/ModalContainer.vue";
 
 </script>
 
