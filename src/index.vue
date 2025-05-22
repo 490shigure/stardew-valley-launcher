@@ -35,8 +35,8 @@ onMounted(async () => {
             <component :is="activeManage === 'mods' ? ModsManage : SavesManage" class="flex-1" />
         </keep-alive>
         <!-- 额外区域 Section3 -->
-        <div class="bg-purple-500 text-white p-4">
+        <!-- <div class="bg-purple-500 text-white p-4">
             Section3
-        </div>
+        </div> -->
     </div>
 </template>
