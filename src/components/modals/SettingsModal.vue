@@ -43,7 +43,7 @@ const close = () => closeModal('settings');
         <!-- 语言选择 -->
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">{{ $t('settings.language') }}</label>
-          <select v-model="currentLocale" @change="handleLanguageChange" class="mt-1 block w-full border-gray-300 rounded">
+          <select v-model="currentLocale" @change="handleLanguageChange" class="p-3 mt-1 block w-full border-black border rounded">
             <option v-for="locale in supportedLocales" :key="locale" :value="locale">
               {{ localeMap[locale] }}
             </option>
