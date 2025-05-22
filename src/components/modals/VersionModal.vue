@@ -2,7 +2,7 @@
 import { computed, ref, onMounted } from 'vue';
 import { modalUtil } from '@/utils/modal';
 import packageJson from '../../../package.json';
-import { getCliArgs } from '@/utils/cli';
+import { getCliArgs } from '@/utils/app';
 
 // 获取应用版本号
 
