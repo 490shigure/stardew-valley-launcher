@@ -24,7 +24,7 @@ const toggle = (name: ModalName) => {
   state[name] = !state[name];
 };
 
-export function useModalStore() {
+export function modalUtil() {
   return {
     state,
     open,
