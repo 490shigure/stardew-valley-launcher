@@ -16,7 +16,8 @@
     "settings": {
         "title": "设置",
         "language": "语言",
-        "close": "关闭"
+        "close": "关闭",
+        "save": "保存"
     },
     "index": {
         "header": {
