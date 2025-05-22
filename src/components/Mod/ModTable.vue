@@ -52,7 +52,7 @@ const handleToggleAll = () => {
                   class="group px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 select-none"
                   :class="[
                     col.key === 'enabled' ? 'pl-5 pr-0' : '',
-                    col.key !== 'enabled' ? 'cursor-pointer hover:bg-gray-200' : ''
+                    col.key !== 'enabled' ? 'cursor-pointer' : ''
                   ]" @click="col.key !== 'enabled' && handleSort(col.key)">
                   <div class="flex items-center">
                     <template v-if="col.key === 'enabled'">
@@ -61,8 +61,8 @@ const handleToggleAll = () => {
                     </template>
                     <template v-else>
                       <span>{{ col.header }}</span>
-                      <span v-if="props.sortKey === col.key" class="ml-1 text-xs">
-                        {{ props.sortOrder === 'asc' ? '▲' : '▼' }}
+                      <span class="ml-1 text-xs inline-block w-2 text-gray-600">
+                        {{ props.sortKey === col.key ? (props.sortOrder === 'asc' ? '▲' : '▼') : ' ' }}
                       </span>
                     </template>
                   </div>
