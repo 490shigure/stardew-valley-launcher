@@ -101,17 +101,17 @@ onMounted(() => {
     </div>
 
     <!-- 底部工具栏 -->
-    <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
+    <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5 py-2 shrink-0">
       <!-- 搜索框 -->
       <input v-model="filterText" type="text" :placeholder="t('index.body.save_search_placeholder')"
         class="w-fit border-1 border-gray-400 rounded-md p-2" />
       <!-- 右侧工具 -->
       <div class="flex items-center ml-auto gap-3">
         <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-          {{ t('index.body.save_table_tools_btn.refresh') }}
+          {{ t('index.body.save_table_tools_btn.open_folder') }}
         </button>
         <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-          {{ t('index.body.save_table_tools_btn.open_folder') }}
+          {{ t('index.body.save_table_tools_btn.refresh') }}
         </button>
       </div>
     </div>
