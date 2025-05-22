@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { getCliArgs, type CliArgs } from "@/utils/cli";
 import IndexHeader from "@/components/IndexHeader.vue";
-import ModManage from "@/components/Mod/ModManage.vue";
+import ModManage from "@/components/ModManage.vue";
 import SavesManage from "@/components/SavesManage.vue";
 
 const cliArgs = ref<CliArgs>({ args: [] });
