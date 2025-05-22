@@ -57,9 +57,9 @@ const formatCell = (val: unknown) => {
 </script>
 
 <template>
-  <div class="overflow-x-auto overflow-y-auto h-full px-3 pb-2 sm:px-3 lg:px-5">
+  <div class="overflow-x-auto overflow-y-auto h-full px-3 pb-2 sm:px-3 lg:px-5 table-wrapper">
     <div class="inline-block min-w-full align-middle">
-      <div class="ring-1 shadow-sm ring-black/5 sm:rounded-lg h-full">
+      <div class="ring-1 shadow-sm ring-black/5 rounded-md sm:rounded-lg h-full overflow-hidden">
         <table class="min-w-full divide-y divide-gray-300">
           <!-- 表头 -->
           <thead class="bg-gray-50 sticky top-0">
@@ -101,3 +101,10 @@ const formatCell = (val: unknown) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.table-wrapper {
+  /* 保留滚动条空间，并确保左右对称 */
+  scrollbar-gutter: stable both-edges;
+}
+</style>
