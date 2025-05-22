@@ -25,6 +25,28 @@ const pos = reactive({ x: 0, y: 0 });
 // 是否向左展开子菜单
 const openToLeft = ref(false);
 
+// 新增：提取位置及方向调整逻辑，便于复用
+const updatePosition = async () => {
+  // 初始位置
+  pos.x = props.x;
+  pos.y = props.y;
+
+  // 下一帧测量尺寸并调整
+  await nextTick();
+  requestAnimationFrame(() => {
+    const el = rootRef.value;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      // 判断子菜单方向：若右侧剩余空间不足 180px，则向左展开
+      openToLeft.value = pos.x + rect.width + 180 > window.innerWidth;
+      if (pos.x > maxX) pos.x = Math.max(0, maxX);
+      if (pos.y > maxY) pos.y = Math.max(0, maxY);
+    }
+  });
+};
+
 const handleGlobalClick = () => {
   emit('close');
 };
@@ -34,29 +56,22 @@ watch(
   () => props.visible,
   async (visible) => {
     if (visible) {
-      // 初始位置
-      pos.x = props.x;
-      pos.y = props.y;
-
-      // 下一帧测量尺寸并调整
-      await nextTick();
-      requestAnimationFrame(() => {
-        const el = rootRef.value;
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          const maxX = window.innerWidth - rect.width;
-          const maxY = window.innerHeight - rect.height;
-          // 判断子菜单方向：若右侧剩余空间不足 180px，则向左展开
-          openToLeft.value = pos.x + rect.width + 180 > window.innerWidth;
-          if (pos.x > maxX) pos.x = Math.max(0, maxX);
-          if (pos.y > maxY) pos.y = Math.max(0, maxY);
-        }
-      });
+      await updatePosition();
 
       // 注册一次性点击关闭
       requestAnimationFrame(() => {
         document.addEventListener('click', handleGlobalClick, { once: true });
       });
+    }
+  },
+);
+
+// 新增：当坐标变化且菜单已可见时，重新定位菜单
+watch(
+  () => [props.x, props.y],
+  () => {
+    if (props.visible) {
+      updatePosition();
     }
   },
 );
