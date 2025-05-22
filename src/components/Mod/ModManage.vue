@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useModsStore } from '@/stores/useModsStore';
-import ModTable from './ModTable.vue';
+import DataTable from '@/components/common/DataTable.vue';
+import type { Column } from '@/components/common/DataTable.vue';
 import ModToolbar from './ModToolbar.vue';
 import type { ModInfo } from '@/types/mod';
+import { useI18n } from 'vue-i18n';
 
 const modsStore = useModsStore();
 
@@ -214,8 +216,8 @@ onMounted(() => {
 });
 
 // 在 setup 结尾处添加事件处理函数
-const handleToggle = (id: string) => {
-    modsStore.toggleMod(id);
+const handleToggle = (id: string | number) => {
+    modsStore.toggleMod(String(id));
 };
 
 // 全选 / 取消全选
@@ -232,20 +234,30 @@ const handleRefresh = () => {
     // 这里后续可接入真实的刷新逻辑，例如重新扫描 Mods 目录
     console.log('refresh clicked');
 };
+
+// DataTable 列配置
+const { t } = useI18n();
+const modColumns = computed<Column[]>(() => [
+    { key: 'name', header: t('index.body.mod_table_header.name') },
+    { key: 'last_update', header: t('index.body.mod_table_header.last_update') },
+    { key: 'version', header: t('index.body.mod_table_header.version') },
+    { key: 'updatable', header: t('index.body.mod_table_header.updatable') },
+]);
 </script>
 
 <template>
     <div class="flex-1 flex flex-col min-h-0">
         <!-- 表格模块（可伸缩） -->
         <div class="flex-1 min-h-0">
-            <ModTable :mods="displayMods" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
+            <DataTable :items="displayMods" :columns="modColumns" selectable row-key="uniqueId"
+                :selected-keys="modsStore.enabledIds" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
                 @sort="handleSort" @toggle-all="handleToggleAll" />
         </div>
 
         <!-- 底部工具栏（固定高度） -->
         <div class="shrink-0">
-            <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter" @checkUpdate="handleCheckUpdate"
-                @refresh="handleRefresh" />
+            <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter"
+                @checkUpdate="handleCheckUpdate" @refresh="handleRefresh" />
         </div>
     </div>
 </template>
