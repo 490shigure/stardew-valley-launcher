@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useModalStore } from '@/stores/useModalStore';
+
+// modal store
+const { open } = useModalStore();
 
 // 菜单状态管理
 const activeMenu = ref<string | null>(null);
@@ -20,8 +24,13 @@ const closeAllMenus = () => {
 
 // 菜单项点击事件处理
 const handleMenuItemClick = (action: string) => {
-  // 这里可以根据不同的菜单项执行不同的操作
-  console.log(`菜单项 ${action} 被点击`);
+  switch (action) {
+    case 'settings':
+      open('settings');
+      break;
+    default:
+      console.log(`菜单项 ${action} 被点击`);
+  }
   closeAllMenus();
 };
 </script>
@@ -32,7 +41,7 @@ const handleMenuItemClick = (action: string) => {
     <div class="flex bg-gray-100 border-b border-gray-300 text-sm">
       <!-- 文件菜单 -->
       <div class="relative">
-        <button @click="toggleMenu('file')" @blur="closeAllMenus" class="px-4 py-2 hover:bg-gray-200"
+        <button @click="toggleMenu('file')" class="px-4 py-2 hover:bg-gray-200"
           :class="{ 'bg-gray-200': activeMenu === 'file' }">
           {{ $t('menu.file') }}
         </button>
@@ -53,7 +62,7 @@ const handleMenuItemClick = (action: string) => {
 
       <!-- 工具菜单 -->
       <div class="relative">
-        <button @click="toggleMenu('tools')" @blur="closeAllMenus" class="px-4 py-2 hover:bg-gray-200"
+        <button @click="toggleMenu('tools')" class="px-4 py-2 hover:bg-gray-200"
           :class="{ 'bg-gray-200': activeMenu === 'tools' }">
           {{ $t('menu.tools') }}
         </button>
@@ -70,7 +79,7 @@ const handleMenuItemClick = (action: string) => {
 
       <!-- 关于菜单 -->
       <div class="relative">
-        <button @click="toggleMenu('about')" @blur="closeAllMenus" class="px-4 py-2 hover:bg-gray-200"
+        <button @click="toggleMenu('about')" class="px-4 py-2 hover:bg-gray-200"
           :class="{ 'bg-gray-200': activeMenu === 'about' }">
           {{ $t('menu.about') }}
         </button>
