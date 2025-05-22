@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useModsStore } from '@/stores/useModsStore';
+import ModTable from './ModTable.vue';
+import ModToolbar from './ModToolbar.vue';
 
 type ModInfo = {
     name: string;
@@ -200,92 +202,34 @@ const displayMods = computed(() => {
 onMounted(() => {
     modsStore.setMods(installedMods.value);
 });
+
+// 在 setup 结尾处添加事件处理函数
+const handleToggle = (id: string) => {
+    modsStore.toggleMod(id);
+};
+
+const handleCheckUpdate = () => {
+    // 这里后续可接入真实的检查更新逻辑
+    console.log('check update clicked');
+};
+
+const handleRefresh = () => {
+    // 这里后续可接入真实的刷新逻辑，例如重新扫描 Mods 目录
+    console.log('refresh clicked');
+};
 </script>
 
 <template>
     <div class="flex-1 overflow-y-auto flex flex-col">
-        <!-- 模组列表 -->
-        <div class="overflow-x-auto">
-            <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
-                <div class="overflow-hidden ring-1 shadow-sm ring-black/5 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-300">
-                        <!-- 模组列表表头 -->
-                        <thead class="bg-gray-50 cursor-pointer">
-                            <tr>
-                                <th scope="col" class="group py-3.5 pr-0 pl-5 text-left text-sm
-                                     font-semibold text-gray-900 ">
-                                </th>
-                                <th scope="col" class="group px-0 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    {{ $t('index.body.mod_table_header.name') }}
-                                    <span class="invisible ml-1 text-gray-400 group-hover:visible group-focus:visible">
-                                        ↑
-                                    </span>
-                                </th>
-                                <th scope="col" class="group px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    {{ $t('index.body.mod_table_header.last_update') }}
-                                    <span class="invisible ml-1 text-gray-400 group-hover:visible group-focus:visible">
-                                        ↑
-                                    </span>
-                                </th>
-                                <th scope="col" class="group px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    {{ $t('index.body.mod_table_header.version') }}
-                                    <span class="invisible ml-1 text-gray-400 group-hover:visible group-focus:visible">
-                                        ↑
-                                    </span>
-                                </th>
-                                <th scope="col" class="group px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                    {{ $t('index.body.mod_table_header.updatable') }}
-                                    <span class="invisible ml-1 text-gray-400 group-hover:visible group-focus:visible">
-                                        ↑
-                                    </span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <!-- 模组列表内容 -->
-                        <tbody class="divide-y divide-gray-200 bg-white">
-                            <tr v-for="mod in displayMods" :key="mod.uniqueId" class="hover:bg-gray-100">
-                                <td class="py-4 pr-0 pl-5">
-                                    <input type="checkbox" v-model="mod.enabled"
-                                        class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out">
-                                </td>
-                                <td class="px-0 py-4 text-sm whitespace-nowrap">
-                                    {{ mod.name }}</td>
-                                <td class="px-3 py-4 text-sm whitespace-nowrap">{{ mod.last_update }}</td>
-                                <td class="px-3 py-4 text-sm whitespace-nowrap">{{ mod.version }}</td>
-                                <td class="px-3 py-4 text-sm whitespace-nowrap">{{ mod.updatable }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- 模组列表底部工具栏 -->
-        <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
-            <!-- 筛选模组状态 -->
-            <select id="mod_status" v-model="modStatusFilter" class="w-fit border-1 border-gray-300 rounded-md p-2">
-                <option v-for="status in Object.values(ModStatus)" :key="status" :value="status">
-                    {{ $t(`index.body.mod_status.${status}`) }}
-                </option>
-            </select>
-            <!-- 搜索框 -->
-            <input type="text" v-model="filterText" :placeholder="$t('index.body.search_placeholder')"
-                class="w-fit border-1 border-gray-400 rounded-md p-2">
-            <!-- 语言选择 -->
-            <!-- <select id="locale" v-model="$i18n.locale" class="w-fit border-1 border-gray-300 rounded-md p-2">
-                <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">
-                    {{ localeMap[locale as keyof typeof localeMap] }}</option>
-            </select> -->
-            <!-- 右侧区域 -->
-            <div class="flex items-center ml-auto gap-3">
-                <!-- 检查更新 -->
-                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-                    {{ $t('index.body.mod_table_tools_btn.check_update') }}
-                </button>
-                <!-- 列表刷新 -->
-                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
-                    {{ $t('index.body.mod_table_tools_btn.refresh') }}
-                </button>
-            </div>
-        </div>
+        <!-- 表格模块 -->
+        <ModTable :mods="displayMods" @toggle="handleToggle" />
+
+        <!-- 底部工具栏 -->
+        <ModToolbar
+            v-model:filterText="filterText"
+            v-model:modStatus="modStatusFilter"
+            @checkUpdate="handleCheckUpdate"
+            @refresh="handleRefresh"
+        />
     </div>
 </template>
