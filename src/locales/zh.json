@@ -26,7 +26,9 @@
             "total_mods": "总模组",
             "enabled_mods": "已启用",
             "updatable_mods": "可更新",
-            "start_btn_text": "启动"
+            "start_btn_text": "启动",
+            "mods_manage_btn_text": "模组管理",
+            "saves_manage_btn_text": "存档管理"
         },
         "body": {
             "mod_table_header": {
