@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { localeMap } from '@/i18n';
+import { ref, computed, onMounted } from 'vue';
+import { useModsStore } from '@/stores/useModsStore';
 
 type ModInfo = {
     name: string;
@@ -15,7 +15,8 @@ type ModInfo = {
     updatable: boolean;
 }
 
-const enabledMods = ref<string[]>(["cat.chatcommands"]);
+const modsStore = useModsStore();
+
 const installedMods = ref<ModInfo[]>([
     {
         name: "Chat Commands",
@@ -42,77 +43,41 @@ const installedMods = ref<ModInfo[]>([
         updatable: true,
     },
     {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
-        enabled: false,
+        name: "Better Ranching",
+        author: "Urbanyeti",
+        version: "1.9.0",
+        description: "Improves the ranching experience with better animal interactions",
+        uniqueId: "Urbanyeti.BetterRanching",
+        MinimumApiVersion: "3.0.0",
+        UpdateKeys: ["Nexus:859"],
+        last_update: "2025-03-30",
+        enabled: true,
+        updatable: false,
+    },
+    {
+        name: "Chests Anywhere",
+        author: "Pathoschild",
+        version: "1.21.0",
+        description: "Access your chests from anywhere",
+        uniqueId: "Pathoschild.ChestsAnywhere",
+        MinimumApiVersion: "3.0.0",
+        UpdateKeys: ["Nexus:518"],
+        last_update: "2025-03-29",
+        enabled: true,
         updatable: true,
     },
     {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
+        name: "Automate",
+        author: "Pathoschild",
+        version: "1.29.0",
+        description: "Lets you automate crafting, smelting, and more",
+        uniqueId: "Pathoschild.Automate",
+        MinimumApiVersion: "3.0.0",
+        UpdateKeys: ["Nexus:1063"],
+        last_update: "2025-03-28",
         enabled: false,
         updatable: true,
-    },
-    {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
-        enabled: false,
-        updatable: true,
-    },
-    {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
-        enabled: false,
-        updatable: true,
-    },
-    {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
-        enabled: false,
-        updatable: true,
-    },
-    {
-        name: "AutomaticGates",
-        author: "Rakiin aKa ScheKaa",
-        version: "2.5.4",
-        description: "Opens and closes gates automatically",
-        uniqueId: "Rakiin.AutomaticGates",
-        MinimumApiVersion: "4.0",
-        UpdateKeys: ["Nexus:3109"],
-        last_update: "2025-03-31",
-        enabled: false,
-        updatable: true,
-    },
+    }
 ]);
 
 // 搜索文本
@@ -159,7 +124,7 @@ const displayMods = computed(() => {
     });
     // 根据enabledMods修改enabled
     filteredMods.forEach((mod) => {
-        mod.enabled = enabledMods.value.includes(mod.uniqueId);
+        mod.enabled = modsStore.enabledIds.includes(mod.uniqueId);
     });
     // 排序
     filteredMods.sort((a, b) => {
@@ -170,14 +135,11 @@ const displayMods = computed(() => {
     return filteredMods;
 });
 
-// 模组checkbox点击事件
-const handleModCheckboxClick = (uniqueId: string, lastEnabled: boolean) => {
-    if (lastEnabled) {
-        enabledMods.value = enabledMods.value.filter((id) => id !== uniqueId);
-    } else {
-        enabledMods.value.push(uniqueId);
-    }
-}
+// 初始化启用模组列表（仅示例，真实场景应从文件或 API 获取）
+// 初始启用列表与 installedMods 中 enabled 字段保持一致
+onMounted(() => {
+    modsStore.setMods(installedMods.value);
+});
 </script>
 
 <template>
@@ -224,7 +186,6 @@ const handleModCheckboxClick = (uniqueId: string, lastEnabled: boolean) => {
                             <tr v-for="mod in displayMods" :key="mod.uniqueId" class="hover:bg-gray-100">
                                 <td class="py-4 pr-0 pl-5">
                                     <input type="checkbox" v-model="mod.enabled"
-                                        @click="handleModCheckboxClick(mod.uniqueId, mod.enabled)"
                                         class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out">
                                 </td>
                                 <td class="px-0 py-4 text-sm whitespace-nowrap">
