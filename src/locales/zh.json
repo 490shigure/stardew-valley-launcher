@@ -67,6 +67,8 @@
     "version": {
         "title": "版本信息",
         "current": "当前版本：",
-        "close": "关闭"
+        "close": "关闭",
+        "cli_args": "命令行参数",
+        "check_update": "检查更新"
     }
 }
