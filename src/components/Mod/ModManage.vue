@@ -133,6 +133,21 @@ const installedMods = ref<ModInfo[]>([
 // 搜索文本
 const filterText = ref("");
 
+// 排序相关
+const sortKey = ref<string>('name');
+const sortOrder = ref<'asc' | 'desc'>('asc');
+
+const handleSort = (key: string) => {
+    if (sortKey.value === key) {
+        // 同一列时切换升/降序
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
+    } else {
+        // 新列时默认升序
+        sortKey.value = key;
+        sortOrder.value = 'asc';
+    }
+};
+
 // 模组状态
 enum ModStatus {
     All = "all",
@@ -177,9 +192,16 @@ const displayMods = computed(() => {
         mod.enabled = modsStore.enabledIds.includes(mod.uniqueId);
     });
     // 排序
-    filteredMods.sort((a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
+    filteredMods.sort((a: any, b: any) => {
+        const aVal = a[sortKey.value];
+        const bVal = b[sortKey.value];
+        // 统一转为字符串比较，布尔转数字
+        const normalize = (v: any) =>
+            typeof v === 'boolean' ? (v ? 1 : 0) : v ?? '';
+        const valA = normalize(aVal);
+        const valB = normalize(bVal);
+        if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1;
+        if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1;
         return 0;
     });
     return filteredMods;
@@ -210,14 +232,11 @@ const handleRefresh = () => {
 <template>
     <div class="flex-1 overflow-y-auto flex flex-col">
         <!-- 表格模块 -->
-        <ModTable :mods="displayMods" @toggle="handleToggle" />
+        <ModTable :mods="displayMods" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
+            @sort="handleSort" />
 
         <!-- 底部工具栏 -->
-        <ModToolbar
-            v-model:filterText="filterText"
-            v-model:modStatus="modStatusFilter"
-            @checkUpdate="handleCheckUpdate"
-            @refresh="handleRefresh"
-        />
+        <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter" @checkUpdate="handleCheckUpdate"
+            @refresh="handleRefresh" />
     </div>
 </template>
