@@ -5,6 +5,7 @@ import DataTable from '@/components/common/DataTable.vue';
 import type { Column } from '@/components/common/DataTable.vue';
 import type { ModInfo } from '@/types/mod';
 import { useI18n } from 'vue-i18n';
+import ContextMenu, { ContextMenuOption } from '@/components/common/ContextMenu.vue';
 
 const modsStore = useModsStore();
 
@@ -242,6 +243,45 @@ const modColumns = computed<Column[]>(() => [
     { key: 'version', header: t('index.body.mod_table_header.version') },
     { key: 'updatable', header: t('index.body.mod_table_header.updatable') },
 ]);
+
+// ---------- 行级右键菜单 ----------
+const context = ref<{ visible: boolean; x: number; y: number; target: ModInfo | null }>({
+    visible: false,
+    x: 0,
+    y: 0,
+    target: null,
+});
+
+// 生成菜单选项
+const contextOptions = computed<ContextMenuOption[]>(() => {
+    const mod = context.value.target;
+    if (!mod) return [];
+    return [
+        {
+            label: mod.enabled ? '禁用模组' : '启用模组',
+            action: () => modsStore.toggleMod(mod.uniqueId),
+        },
+        {
+            label: '打开模组文件夹',
+            action: () => console.log('open folder', mod.uniqueId),
+        },
+        {
+            label: '查看详情',
+            action: () => console.log('details', mod.uniqueId),
+        },
+    ];
+});
+
+const handleRowContextMenu = (event: MouseEvent, row: any) => {
+    context.value.visible = true;
+    context.value.x = event.clientX;
+    context.value.y = event.clientY;
+    context.value.target = row as ModInfo;
+};
+
+const closeContextMenu = () => {
+    context.value.visible = false;
+};
 </script>
 
 <template>
@@ -250,7 +290,7 @@ const modColumns = computed<Column[]>(() => [
         <div class="flex-1 min-h-0">
             <DataTable :items="displayMods" :columns="modColumns" selectable row-key="uniqueId"
                 :selected-keys="modsStore.enabledIds" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
-                @sort="handleSort" @toggle-all="handleToggleAll" />
+                @sort="handleSort" @toggle-all="handleToggleAll" @row-contextmenu="handleRowContextMenu" />
         </div>
 
         <!-- 底部工具栏（固定高度） -->
@@ -278,5 +318,9 @@ const modColumns = computed<Column[]>(() => [
                 </button>
             </div>
         </div>
+
+        <!-- 右键菜单 -->
+        <ContextMenu :visible="context.visible" :x="context.x" :y="context.y" :options="contextOptions"
+            @close="closeContextMenu" />
     </div>
 </template>
