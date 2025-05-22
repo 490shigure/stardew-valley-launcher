@@ -13,6 +13,11 @@
         "about_help": "Help",
         "about_version": "Version"
     },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "close": "Close"
+    },
     "index": {
         "header": {
             "workspace": "Workspace",

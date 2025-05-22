@@ -13,6 +13,11 @@
         "about_help": "帮助",
         "about_version": "版本信息"
     },
+    "settings": {
+        "title": "设置",
+        "language": "语言",
+        "close": "关闭"
+    },
     "index": {
         "header": {
             "workspace": "工作区",
