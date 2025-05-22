@@ -10,7 +10,7 @@ import Index from "@/index.vue";
     <header class="bg-blue-500 text-white p-4">
       Header
     </header>
-    <main class="flex-1 flex flex-col overflow-y-auto bg-gray-100 p-4">
+    <main class="flex-1 flex flex-col overflow-y-auto bg-gray-100">
       <div class="bg-green-500 text-white p-4">
         Section1
       </div>
