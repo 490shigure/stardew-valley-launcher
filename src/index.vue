@@ -1,30 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { getCliArgs, type CliArgs } from "@/utils/cli";
+import { ref } from "vue";
 import IndexHeader from "@/components/IndexHeader.vue";
 import ModManage from "@/components/ModManage.vue";
 import SavesManage from "@/components/SavesManage.vue";
-
-const cliArgs = ref<CliArgs>({ args: [] });
-const isLoadingArgs = ref(true);
 
 // 管理视图切换：mods 或 saves
 const activeManage = ref<'mods' | 'saves'>('mods');
 const toggleManageView = () => {
     activeManage.value = activeManage.value === 'mods' ? 'saves' : 'mods';
 };
-
-// 在组件挂载时获取命令行参数
-onMounted(async () => {
-    isLoadingArgs.value = true;
-    try {
-        cliArgs.value = await getCliArgs();
-    } catch (error) {
-        console.error("获取命令行参数失败:", error);
-    } finally {
-        isLoadingArgs.value = false;
-    }
-});
 </script>
 
 <template>

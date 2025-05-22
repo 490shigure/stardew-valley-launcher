@@ -1,6 +1,6 @@
 use tauri::{AppHandle, State};
 
-use super::{CliArgs, CliArgsState};
+use crate::{CliArgs, CliArgsState};
 
 // 问候命令
 #[tauri::command]
