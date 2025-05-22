@@ -3,7 +3,6 @@ import { ref, computed, onMounted } from 'vue';
 import { useModsStore } from '@/stores/useModsStore';
 import DataTable from '@/components/common/DataTable.vue';
 import type { Column } from '@/components/common/DataTable.vue';
-import ModToolbar from './ModToolbar.vue';
 import type { ModInfo } from '@/types/mod';
 import { useI18n } from 'vue-i18n';
 
@@ -255,9 +254,29 @@ const modColumns = computed<Column[]>(() => [
         </div>
 
         <!-- 底部工具栏（固定高度） -->
-        <div class="shrink-0">
-            <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter"
-                @checkUpdate="handleCheckUpdate" @refresh="handleRefresh" />
+        <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5 py-2 shrink-0">
+            <!-- 模组状态筛选 -->
+            <select id="mod_status" v-model="modStatusFilter" class="w-fit border-1 border-gray-300 rounded-md p-2">
+                <option v-for="status in Object.values(ModStatus)" :key="status" :value="status">
+                    {{ t(`index.body.mod_status.${status}`) }}
+                </option>
+            </select>
+
+            <!-- 搜索框 -->
+            <input type="text" v-model="filterText" :placeholder="t('index.body.search_placeholder')"
+                class="w-fit border-1 border-gray-400 rounded-md p-2" />
+
+            <!-- 右侧按钮区域 -->
+            <div class="flex items-center ml-auto gap-3">
+                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700"
+                    @click="handleCheckUpdate">
+                    {{ t('index.body.mod_table_tools_btn.check_update') }}
+                </button>
+                <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700"
+                    @click="handleRefresh">
+                    {{ t('index.body.mod_table_tools_btn.refresh') }}
+                </button>
+            </div>
         </div>
     </div>
 </template>
