@@ -1,20 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// 类型定义，可根据需要扩展
-export interface ModInfo {
-  name: string;
-  author: string;
-  version: string;
-  description: string;
-  uniqueId: string;
-  MinimumApiVersion: string;
-  UpdateKeys: string[];
-  last_update: string;
-  enabled: boolean;
-  updatable: boolean;
-}
+import type { ModInfo } from '@/types/mod';
 
 const props = defineProps<{ mods: ModInfo[] }>();
 const emit = defineEmits<(e: 'toggle', id: string) => void>();
