@@ -83,7 +83,7 @@ const emit = defineEmits(['toggleManageView']);
                 <path d="M2 9H22" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <span class="opacity-0 transition-opacity duration-200 group-hover:opacity-100 absolute -bottom-8 whitespace-nowrap bg-gray-700 text-white text-sm rounded p-1 pointer-events-none z-50">
-                {{ props.activeManage === 'mods' ? '存档管理' : '模组管理' }}
+                {{ props.activeManage === 'mods' ? $t('index.header.saves_manage_btn_text') : $t('index.header.mods_manage_btn_text') }}
             </span>
         </button>
         <!-- 保存 -->
