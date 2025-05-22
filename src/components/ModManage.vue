@@ -269,6 +269,13 @@ const contextOptions = computed<ContextMenuOption[]>(() => {
             label: '查看详情',
             action: () => console.log('details', mod.uniqueId),
         },
+        {
+            label: '导出',
+            children: [
+                { label: '导出为 JSON', action: () => console.log('export json', mod.uniqueId) },
+                { label: '导出为 CSV', action: () => console.log('export csv', mod.uniqueId) },
+            ],
+        },
     ];
 });
 

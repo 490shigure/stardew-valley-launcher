@@ -116,6 +116,13 @@ const saveContextOptions = computed<ContextMenuOption[]>(() => {
       label: '删除存档',
       action: () => console.log('delete save', save.name),
     },
+    {
+      label: '更多',
+      children: [
+        { label: '移动存档', action: () => console.log('move save', save.name) },
+        { label: '重命名存档', action: () => console.log('rename save', save.name) },
+      ],
+    },
   ];
 });
 
