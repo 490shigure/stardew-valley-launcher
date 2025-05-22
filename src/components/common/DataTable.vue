@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 type SortOrder = 'asc' | 'desc';
 
@@ -59,8 +59,23 @@ const formatCell = (val: unknown) => {
 // 处理行级右键菜单
 const handleContextMenu = (event: MouseEvent, row: Record<string, any>) => {
   event.preventDefault();
+  // 更新当前右键行并添加一次性点击监听以清除高亮
+  contextRowKey.value = row[rowKey.value];
+
+  const clearHighlight = () => {
+    contextRowKey.value = null;
+    document.removeEventListener('click', clearHighlight);
+  };
+
+  requestAnimationFrame(() => {
+    document.addEventListener('click', clearHighlight, { once: true });
+  });
+
   emit('row-contextmenu', event, row);
 };
+
+// 当前被右键的行主键
+const contextRowKey = ref<string | number | null>(null);
 </script>
 
 <template>
@@ -77,7 +92,8 @@ const handleContextMenu = (event: MouseEvent, row: Record<string, any>) => {
                   class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out" />
               </th>
               <th v-for="col in props.columns" :key="col.key"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 z-10 select-none first:rounded-tl-md last:rounded-tr-md" :class="[
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 z-10 select-none first:rounded-tl-md last:rounded-tr-md"
+                :class="[
                   col.sortable !== false ? 'cursor-pointer' : '',
                   col.width ?? ''
                 ]" @click="col.sortable !== false && handleSort(col.key)">
@@ -93,8 +109,11 @@ const handleContextMenu = (event: MouseEvent, row: Record<string, any>) => {
 
           <!-- 内容 -->
           <tbody class="divide-y divide-gray-200 bg-white">
-            <tr v-for="row in props.items" :key="row[rowKey]" class="hover:bg-gray-100"
-                @contextmenu.prevent="handleContextMenu($event, row)">
+            <tr v-for="row in props.items" :key="row[rowKey]" :class="[
+              contextRowKey === row[rowKey]
+                ? 'bg-green-50 hover:bg-green-50'
+                : 'hover:bg-gray-100'
+            ]" @contextmenu.prevent="handleContextMenu($event, row)">
               <td v-if="props.selectable" class="pl-5 pr-0 py-4">
                 <input type="checkbox" :checked="isSelected(row)" @change="emit('toggle', row[rowKey])"
                   class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out" />
