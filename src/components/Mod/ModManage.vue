@@ -235,13 +235,17 @@ const handleRefresh = () => {
 </script>
 
 <template>
-    <div class="flex-1 overflow-y-auto flex flex-col">
-        <!-- 表格模块 -->
-        <ModTable :mods="displayMods" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
-            @sort="handleSort" @toggle-all="handleToggleAll" />
+    <div class="flex-1 flex flex-col min-h-0">
+        <!-- 表格模块（可伸缩） -->
+        <div class="flex-1 min-h-0">
+            <ModTable :mods="displayMods" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
+                @sort="handleSort" @toggle-all="handleToggleAll" />
+        </div>
 
-        <!-- 底部工具栏 -->
-        <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter" @checkUpdate="handleCheckUpdate"
-            @refresh="handleRefresh" />
+        <!-- 底部工具栏（固定高度） -->
+        <div class="shrink-0">
+            <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter" @checkUpdate="handleCheckUpdate"
+                @refresh="handleRefresh" />
+        </div>
     </div>
 </template>

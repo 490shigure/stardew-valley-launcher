@@ -40,10 +40,10 @@ const handleToggleAll = () => {
 </script>
 
 <template>
-  <div class="overflow-x-auto">
-    <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
+  <div class="overflow-x-auto overflow-y-auto h-full px-3 pb-2 sm:px-3 lg:px-5">
+    <div class="inline-block min-w-full align-middle">
       <div class="ring-1 shadow-sm ring-black/5 sm:rounded-lg">
-        <div class="max-h-96 overflow-y-auto">
+        <div class="h-full">
           <table class="min-w-full divide-y divide-gray-300">
             <!-- 表头 -->
             <thead class="bg-gray-50 sticky top-0">
