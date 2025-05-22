@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <footer class="bg-blue-500 text-white p-4 w-full">
+  <footer class="bg-blue-500 text-white p-1 w-full">
     Footer
   </footer>
 </template>

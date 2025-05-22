@@ -37,7 +37,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
+  <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5 py-2">
     <!-- 模组状态筛选 -->
     <select
       id="mod_status"
