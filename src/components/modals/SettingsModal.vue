@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import { supportedLocales, localeMap, setLocale, getLocale } from '@/i18n';
-import { useModalStore } from '@/stores/useModalStore';
+import { modalUtil } from '@/utils/modal';
 
-const { state, close: closeModal } = useModalStore();
+const { state, close: closeModal } = modalUtil();
 
 // 是否显示弹窗
 const show = computed(() => state.settings);

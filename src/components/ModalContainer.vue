@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
-import { useModalStore } from '@/stores/useModalStore';
+import { modalUtil } from '@/utils/modal';
 
 // 异步加载弹窗组件，首次打开时才下载并挂载
 const SettingsModal = defineAsyncComponent(() =>
@@ -12,7 +12,7 @@ const VersionModal = defineAsyncComponent(() =>
 );
 
 // 获取全局弹窗状态
-const { state } = useModalStore();
+const { state } = modalUtil();
 </script>
 
 <template>

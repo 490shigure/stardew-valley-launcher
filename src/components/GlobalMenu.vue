@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useModalStore } from '@/stores/useModalStore';
+import { modalUtil } from '@/utils/modal';
 
 // modal store
-const { open } = useModalStore();
+const { open } = modalUtil();
 
 // ----------------------------- 菜单配置 -----------------------------
 interface MenuItemConfig {

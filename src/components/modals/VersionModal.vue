@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useModalStore } from '@/stores/useModalStore';
+import { modalUtil } from '@/utils/modal';
 import packageJson from '../../../package.json';
 
 // 获取应用版本号
 
-const { state, close: closeModal } = useModalStore();
+const { state, close: closeModal } = modalUtil();
 
 const show = computed(() => state.version);
 
