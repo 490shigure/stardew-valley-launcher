@@ -43,6 +43,16 @@ export const useModsStore = defineStore('mods', {
       }
     },
 
+    /**
+     * 一键切换所有模组启用状态
+     * @param enabled true=全部启用，false=全部禁用
+     */
+    setAllEnabled(enabled: boolean) {
+      this.mods.forEach((m) => {
+        m.enabled = enabled;
+      });
+    },
+
     /** 将当前状态标记为已保存 */
     markSaved() {
       this.originalEnabledMap = Object.fromEntries(this.mods.map((m) => [m.uniqueId, m.enabled]));

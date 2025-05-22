@@ -218,6 +218,11 @@ const handleToggle = (id: string) => {
     modsStore.toggleMod(id);
 };
 
+// 全选 / 取消全选
+const handleToggleAll = (checked: boolean) => {
+    modsStore.setAllEnabled(checked);
+};
+
 const handleCheckUpdate = () => {
     // 这里后续可接入真实的检查更新逻辑
     console.log('check update clicked');
@@ -233,7 +238,7 @@ const handleRefresh = () => {
     <div class="flex-1 overflow-y-auto flex flex-col">
         <!-- 表格模块 -->
         <ModTable :mods="displayMods" :sort-key="sortKey" :sort-order="sortOrder" @toggle="handleToggle"
-            @sort="handleSort" />
+            @sort="handleSort" @toggle-all="handleToggleAll" />
 
         <!-- 底部工具栏 -->
         <ModToolbar v-model:filterText="filterText" v-model:modStatus="modStatusFilter" @checkUpdate="handleCheckUpdate"
