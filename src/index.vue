@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { getCliArgs, type CliArgs } from "@/utils/cli";
 import IndexHeader from "@/components/IndexHeader.vue";
-import IndexBody from "@/components/IndexBody.vue";
+import ModsManage from "@/components/ModsManage.vue";
 
 const cliArgs = ref<CliArgs>({ args: [] });
 const isLoadingArgs = ref(true);
@@ -24,7 +24,7 @@ onMounted(async () => {
     <div class="flex-1 flex flex-col overflow-y-auto bg-gray-100">
         <IndexHeader />
         <!-- 主内容区域 -->
-        <IndexBody class="flex-1" />
+        <ModsManage class="flex-1" />
         <!-- 额外区域 Section3 -->
         <div class="bg-purple-500 text-white p-4">
             Section3
