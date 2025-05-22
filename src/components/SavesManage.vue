@@ -54,29 +54,31 @@ onMounted(() => {
     <!-- 存档列表 -->
     <div class="overflow-x-auto">
       <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
-        <div class="overflow-hidden ring-1 shadow-sm ring-black/5 sm:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-5 py-3.5 text-left text-sm font-semibold text-gray-900">存档名</th>
-                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">农场主</th>
-                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">农场</th>
-                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">最后游玩</th>
-                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">季节 / 天</th>
-                <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">年份</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
-              <tr v-for="save in displaySaves" :key="save.name" class="hover:bg-gray-100">
-                <td class="px-5 py-4 whitespace-nowrap text-sm">{{ save.name }}</td>
-                <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmer }}</td>
-                <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmName }}</td>
-                <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.lastPlayed }}</td>
-                <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.seasonDay }}</td>
-                <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.year }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="ring-1 shadow-sm ring-black/5 sm:rounded-lg">
+          <div class="max-h-96 overflow-y-auto">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50 sticky top-0">
+                <tr>
+                  <th class="px-5 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">存档名</th>
+                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">农场主</th>
+                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">农场</th>
+                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">最后游玩</th>
+                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">季节 / 天</th>
+                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">年份</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <tr v-for="save in displaySaves" :key="save.name" class="hover:bg-gray-100">
+                  <td class="px-5 py-4 whitespace-nowrap text-sm">{{ save.name }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmer }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmName }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.lastPlayed }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.seasonDay }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.year }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
