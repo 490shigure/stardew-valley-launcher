@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import DataTable from '@/components/common/DataTable.vue';
+import type { Column } from '@/components/common/DataTable.vue';
 
 // 存档信息类型
 interface SaveInfo {
@@ -31,17 +33,55 @@ const saves = ref<SaveInfo[]>([
   },
 ]);
 
+// 排序相关
+const sortKey = ref<string>('name');
+const sortOrder = ref<'asc' | 'desc'>('asc');
+
+const handleSort = (key: string) => {
+  if (sortKey.value === key) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortKey.value = key;
+    sortOrder.value = 'asc';
+  }
+};
+
 // 搜索文本
 const filterText = ref('');
 
 // 计算需要展示的存档
 const displaySaves = computed(() => {
-  if (!filterText.value) return saves.value;
-  const lower = filterText.value.toLowerCase();
-  return saves.value.filter((save) =>
-    Object.values(save).some((v) => String(v).toLowerCase().includes(lower)),
-  );
+  // 过滤
+  let list = filterText.value
+    ? saves.value.filter((save) =>
+      Object.values(save).some((v) => String(v).toLowerCase().includes(filterText.value.toLowerCase())),
+    )
+    : [...saves.value];
+
+  // 排序
+  list.sort((a: any, b: any) => {
+    const valA = a[sortKey.value];
+    const valB = b[sortKey.value];
+    const normalize = (v: any) => (typeof v === 'boolean' ? (v ? 1 : 0) : v ?? '');
+    const aVal = normalize(valA);
+    const bVal = normalize(valB);
+    if (aVal < bVal) return sortOrder.value === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortOrder.value === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return list;
 });
+
+// DataTable 列配置
+const saveColumns: Column[] = [
+  { key: 'name', header: '存档名' },
+  { key: 'farmer', header: '农场主' },
+  { key: 'farmName', header: '农场' },
+  { key: 'lastPlayed', header: '最后游玩' },
+  { key: 'seasonDay', header: '季节 / 天' },
+  { key: 'year', header: '年份' },
+];
 
 // 模拟 mounted 时可能的初始化逻辑
 onMounted(() => {
@@ -52,46 +92,16 @@ onMounted(() => {
 <template>
   <div class="flex-1 overflow-y-auto flex flex-col">
     <!-- 存档列表 -->
-    <div class="overflow-x-auto">
-      <div class="inline-block min-w-full py-2 align-middle sm:px-3 lg:px-5">
-        <div class="ring-1 shadow-sm ring-black/5 sm:rounded-lg">
-          <div class="max-h-96 overflow-y-auto">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50 sticky top-0">
-                <tr>
-                  <th class="px-5 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">存档名</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">农场主</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">农场</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">最后游玩</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">季节 / 天</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sticky top-0 bg-gray-50">年份</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <tr v-for="save in displaySaves" :key="save.name" class="hover:bg-gray-100">
-                  <td class="px-5 py-4 whitespace-nowrap text-sm">{{ save.name }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmer }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.farmName }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.lastPlayed }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.seasonDay }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-sm">{{ save.year }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    <div class="flex-1 min-h-0">
+      <DataTable :items="displaySaves" :columns="saveColumns" row-key="name" :sort-key="sortKey" :sort-order="sortOrder"
+        @sort="handleSort" />
     </div>
 
     <!-- 底部工具栏 -->
     <div class="flex items-center justify-start gap-3 sm:px-3 lg:px-5">
       <!-- 搜索框 -->
-      <input
-        v-model="filterText"
-        type="text"
-        placeholder="搜索存档..."
-        class="w-fit border-1 border-gray-400 rounded-md p-2"
-      />
+      <input v-model="filterText" type="text" placeholder="搜索存档..."
+        class="w-fit border-1 border-gray-400 rounded-md p-2" />
       <!-- 右侧工具 -->
       <div class="flex items-center ml-auto gap-3">
         <button class="px-4 py-2 h-fit text-sm text-white bg-blue-500 rounded-md hover:bg-blue-700">
@@ -103,4 +113,4 @@ onMounted(() => {
       </div>
     </div>
   </div>
-</template> 
+</template>
