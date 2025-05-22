@@ -13,6 +13,7 @@ const props = defineProps<TableProps>();
 const emit = defineEmits<{
   (e: 'toggle', id: string): void;
   (e: 'sort', key: string): void;
+  (e: 'toggle-all', checked: boolean): void;
 }>();
 
 const { t } = useI18n();
@@ -29,6 +30,13 @@ const columns = computed(() => [
   { key: 'version', header: t('index.body.mod_table_header.version') },
   { key: 'updatable', header: t('index.body.mod_table_header.updatable') },
 ]);
+
+// 计算当前是否全部选中
+const allSelected = computed(() => props.mods.length > 0 && props.mods.every((m) => m.enabled));
+
+const handleToggleAll = () => {
+  emit('toggle-all', !allSelected.value);
+};
 </script>
 
 <template>
@@ -47,10 +55,16 @@ const columns = computed(() => [
                     col.key !== 'enabled' ? 'cursor-pointer hover:bg-gray-200' : ''
                   ]" @click="col.key !== 'enabled' && handleSort(col.key)">
                   <div class="flex items-center">
-                    <span>{{ col.header }}</span>
-                    <span v-if="props.sortKey === col.key" class="ml-1 text-xs">
-                      {{ props.sortOrder === 'asc' ? '▲' : '▼' }}
-                    </span>
+                    <template v-if="col.key === 'enabled'">
+                      <input type="checkbox" :checked="allSelected" @change="handleToggleAll"
+                        class="w-4 h-4 accent-green-600 transition-all duration-200 ease-in-out" />
+                    </template>
+                    <template v-else>
+                      <span>{{ col.header }}</span>
+                      <span v-if="props.sortKey === col.key" class="ml-1 text-xs">
+                        {{ props.sortOrder === 'asc' ? '▲' : '▼' }}
+                      </span>
+                    </template>
                   </div>
                 </th>
               </tr>
