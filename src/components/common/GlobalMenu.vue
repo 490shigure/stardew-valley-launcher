@@ -96,27 +96,19 @@ const handleMenuItemClick = (action?: string) => {
     <div class="flex items-center bg-neutral-50 border-b border-neutral-300 text-sm font-medium">
       <div v-for="menu in menus" :key="menu.name" class="relative">
         <!-- 顶级菜单按钮 -->
-        <button
-          @click="toggleMenu(menu.name)"
-          class="px-4 py-2 hover:bg-neutral-100 transition-colors"
-          :class="{ 'bg-neutral-200 text-blue-600': activeMenu === menu.name }"
-        >
+        <button @click="toggleMenu(menu.name)" class="px-4 py-2 hover:bg-neutral-100 transition-colors"
+          :class="{ 'bg-neutral-200 text-blue-600': activeMenu === menu.name }">
           {{ $t(menu.label) }}
         </button>
 
         <!-- 下拉菜单 -->
-        <div
-          v-if="activeMenu === menu.name"
-          class="absolute left-0 top-full w-48 bg-white border border-neutral-300 shadow-lg rounded-md py-1 z-20"
-        >
+        <div v-if="activeMenu === menu.name"
+          class="absolute left-0 top-full w-48 bg-white border border-neutral-300 shadow-lg rounded-md py-1 z-20">
           <template v-for="(item, idx) in menu.items" :key="idx">
             <div v-if="item.divider" class="h-px my-1 bg-neutral-200"></div>
 
-            <button
-              v-else
-              @click="handleMenuItemClick(item.action)"
-              class="w-full text-left px-4 py-2 hover:bg-neutral-100 transition-colors"
-            >
+            <button v-else @click="handleMenuItemClick(item.action)"
+              class="w-full text-left px-4 py-2 hover:bg-neutral-100 transition-colors">
               {{ $t(item.label as string) }}
             </button>
           </template>
