@@ -28,6 +28,9 @@ const handleMenuItemClick = (action: string) => {
     case 'settings':
       open('settings');
       break;
+    case 'version':
+      open('version');
+      break;
     default:
       console.log(`菜单项 ${action} 被点击`);
   }

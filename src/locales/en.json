@@ -48,5 +48,10 @@
                 "refresh": "Refresh"
             }
         }
+    },
+    "version": {
+        "title": "Version Information",
+        "current": "Current Version:",
+        "close": "Close"
     }
 }

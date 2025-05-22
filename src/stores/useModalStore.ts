@@ -1,13 +1,15 @@
 import { reactive } from 'vue';
 
-export type ModalName = 'settings';
+export type ModalName = 'settings' | 'version';
 
 interface ModalState {
   settings: boolean;
+  version: boolean;
 }
 
 const state = reactive<ModalState>({
   settings: false,
+  version: false,
 });
 
 const open = (name: ModalName) => {
