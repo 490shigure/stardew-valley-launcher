@@ -16,7 +16,8 @@
     "settings": {
         "title": "Settings",
         "language": "Language",
-        "close": "Close"
+        "close": "Close",
+        "save": "Save"
     },
     "index": {
         "header": {

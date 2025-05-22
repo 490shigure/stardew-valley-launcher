@@ -2,33 +2,27 @@
 import { ref, watch, computed } from 'vue';
 import { supportedLocales, localeMap, setLocale, getLocale } from '@/i18n';
 import { modalUtil } from '@/utils/modal';
+import type { Settings } from '@/types/settings';
 
 const { state, close: closeModal } = modalUtil();
 
 // 是否显示弹窗
 const show = computed(() => state.settings);
 
-// 当前选择的语言
-const currentLocale = ref<string>(getLocale());
-
-// 当弹窗打开时，同步当前语言
-watch(
-  () => show.value,
-  (val) => {
-    if (val) {
-      currentLocale.value = getLocale();
-    }
-  }
-);
+// 设置
+const settings = ref<Settings>({
+  language: 'en',
+});
 
 // 切换语言
 const handleLanguageChange = () => {
-  if (supportedLocales.includes(currentLocale.value as any)) {
-    setLocale(currentLocale.value as any);
+  if (supportedLocales.includes(settings.value.language as any)) {
+    setLocale(settings.value.language as any);
   }
 };
 
 const close = () => closeModal('settings');
+const save = () => closeModal('settings');
 </script>
 
 <template>
@@ -43,14 +37,18 @@ const close = () => closeModal('settings');
         <!-- 语言选择 -->
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">{{ $t('settings.language') }}</label>
-          <select v-model="currentLocale" @change="handleLanguageChange" class="p-3 mt-1 block w-full border-black border rounded">
+          <select v-model="settings.language" @change="handleLanguageChange"
+            class="p-3 mt-1 block w-full border-black border rounded">
             <option v-for="locale in supportedLocales" :key="locale" :value="locale">
               {{ localeMap[locale] }}
             </option>
           </select>
         </div>
 
-        <div class="text-right">
+        <div class="flex justify-end space-x-2">
+          <button @click="save" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">
+            {{ $t('settings.save') }}
+          </button>
           <button @click="close" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">
             {{ $t('settings.close') }}
           </button>
@@ -58,4 +56,4 @@ const close = () => closeModal('settings');
       </div>
     </div>
   </teleport>
-</template> 
+</template>
