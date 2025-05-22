@@ -1,10 +1,22 @@
 <script setup lang="ts">
-import SettingsModal from '@/components/modals/SettingsModal.vue';
-import VersionModal from '@/components/modals/VersionModal.vue';
+import { defineAsyncComponent } from 'vue';
+import { useModalStore } from '@/stores/useModalStore';
+
+// 异步加载弹窗组件，首次打开时才下载并挂载
+const SettingsModal = defineAsyncComponent(() =>
+  import('@/components/modals/SettingsModal.vue')
+);
+
+const VersionModal = defineAsyncComponent(() =>
+  import('@/components/modals/VersionModal.vue')
+);
+
+// 获取全局弹窗状态
+const { state } = useModalStore();
 </script>
 
 <template>
-  <!-- 直接渲染所有需要的弹窗组件，内部含 teleport -->
-  <SettingsModal />
-  <VersionModal />
+  <!-- 仅当对应弹窗需要显示时才挂载组件 -->
+  <SettingsModal v-if="state.settings" />
+  <VersionModal v-if="state.version" />
 </template> 
