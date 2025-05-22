@@ -48,6 +48,19 @@
             "mod_table_tools_btn": {
                 "check_update": "Check Update",
                 "refresh": "Refresh"
+            },
+            "save_table_header": {
+                "name": "Save Name",
+                "farmer": "Farmer",
+                "farmName": "Farm",
+                "lastPlayed": "Last Played",
+                "seasonDay": "Season / Day",
+                "year": "Year"
+            },
+            "save_search_placeholder": "Search saves",
+            "save_table_tools_btn": {
+                "refresh": "Refresh",
+                "open_folder": "Open Folder"
             }
         }
     },
